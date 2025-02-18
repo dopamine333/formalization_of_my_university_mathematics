@@ -3,8 +3,6 @@ import Mathlib.GroupTheory.Perm.Cycle.Concrete
 import Mathlib.GroupTheory.Perm.Subgroup
 import Mathlib.GroupTheory.PresentedGroup
 
--- import MIL.Common
-
 section I
 variable {G : Type} [Group G]
 
@@ -83,6 +81,23 @@ def orbit (G : Type) {X : Type} [Group G] [MulAction G X] (x : X) : Set X := {y 
 example (G : Type) {X : Type} [Group G] [MulAction G X] (x : X)
   : orbit G x = Set.range ((. • x) : G → X) := by simp [orbit, Set.range]
 
+theorem orbit_eq_iff (G : Type) {X : Type} [Group G] [MulAction G X] (x y : X)
+  : orbit G x = orbit G y ↔ ∃ g : G, g • x = y := by
+    constructor
+    . intro h
+      have : y ∈ orbit G x := by rw [h]; use 1; simp
+      exact this
+    . rintro ⟨g, rfl⟩
+      ext y
+      simp [orbit]
+      constructor
+      . rintro ⟨g', rfl⟩
+        use g' * g⁻¹
+        simp [mul_smul]
+      . rintro ⟨g', rfl⟩
+        use g' * g
+        simp [mul_smul]
+
 @[ext]
 structure InvariantSet (G X: Type) [Group G] [MulAction G X] where
   carriar : Set X
@@ -142,10 +157,12 @@ end IV
 
 section V
 
+abbrev orbits (G X : Type) [Group G] [MulAction G X] := Set.range (orbit G : X → Set X)
+
 -- A group action is transitive if there is only one orbit.
 #check Nat.card_eq_one_iff_exists
 def IsTransitive (G X : Type) [Group G] [MulAction G X] : Prop :=
-  Nat.card (Set.range (orbit G : X → Set X)) = 1
+  Nat.card (orbits G X) = 1
 
 theorem IsTransitive_iff (G X : Type) [Group G] [MulAction G X]
   : IsTransitive G X ↔ ∃ x : X, ∀ y : X, orbit G y = orbit G x := by
@@ -169,16 +186,138 @@ example (G X :Type) [Group G] [MulAction G X]
   . rintro ⟨x, surj⟩
     use x
     intro y
-    ext z
-    dsimp [orbit]
-    constructor
-    . rintro ⟨g, rfl⟩
-      obtain ⟨g',rfl⟩ := surj y; dsimp
-      use g * g'
-      rw [mul_smul]
-    . rintro ⟨g, rfl⟩
-      obtain ⟨g',rfl⟩ := surj y; dsimp
-      use g * g'⁻¹
-      rw [← mul_smul, mul_assoc, inv_mul_cancel, mul_one]
+    symm
+    rw [orbit_eq_iff]
+    exact surj y
 
 end V
+
+section VI
+-- In-Class Exercise g•(i,j)=(g(i),g(j))
+
+-- Consider the symmetric group G = Sn acting on the set X = {1, . . . , n}2 by
+-- g∗(i,j)=(g(i),g(j)), forg∈G,(i,j)∈X.
+axiom n : ℕ
+axiom npos : n > 0
+abbrev X := Fin n × Fin n
+abbrev G := Fin n ≃ Fin n
+
+-- (a) Show that this defines a valid group action of G on X.
+def my_action : MulAction G X where
+  smul := fun g ⟨i,j⟩ ↦ ⟨g i, g j⟩
+  one_smul := by intros; rfl
+  mul_smul := by intros; rfl
+
+-- (b) Determine whether the action is faithful.
+theorem is_faithful : @IsFaithful G X _ my_action := by
+  intro g h
+  ext i; dsimp
+  have := h ⟨i, ⟨0, npos⟩⟩
+  simp at this
+  rw [this.1]
+#check Fin
+#check PNat
+
+#check Nat.card_eq_one_iff_exists
+#check Nat.card_eq_one_iff_unique
+#check Nat.card_eq_two_iff
+-- (c) Find the number of orbits under this action.
+theorem number_of_obits :  Nat.card (@orbits G X _ my_action) = if n = 1 then 1 else 2 := by
+  by_cases hn : n = 1
+  . simp [hn]
+    have : Subsingleton X := by rw [X, hn]; infer_instance
+    have : Nonempty X := by rw [X, hn]; infer_instance
+    rw [Nat.card_eq_one_iff_exists]
+    have ⟨i,j⟩ := Classical.choice ‹Nonempty X›
+    simp
+    use i, j
+    rintro A k l rfl
+    rw [‹Subsingleton X›.allEq (k, l) (i, j)]
+  . simp [hn]
+    replace hn : n ≥ 2 := by
+      apply (Nat.two_le_iff n).mpr
+      constructor
+      . linarith [npos]
+      . exact hn
+    let i : Fin n := ⟨0, by linarith⟩
+    let j : Fin n := ⟨1, by linarith⟩
+    have : i ≠ j := by simp [i,j]
+    rw [Nat.card_eq_two_iff]
+    use ⟨orbit G (i,i), by simp⟩, ⟨orbit G (i,j), by simp⟩
+    constructor
+    . simp
+      intro h
+      have : (i,i) ∈ orbit G (i,j) := by rw [← h]; use 1; simp
+      have ⟨g, heq⟩ := this
+      simp [Prod.ext_iff] at heq
+      have : g i = g j := by rw [heq.1, heq.2]
+      have := g.injective this
+      contradiction
+    . ext ⟨_, ⟨k,l⟩, rfl⟩
+      simp
+      by_cases heq : k = l
+      . left
+        rw [heq, orbit_eq_iff]
+        use Equiv.swap l i
+        simp
+      . right
+        rw [orbit_eq_iff]
+        by_cases hik : i = k
+        . rcases hik with rfl
+          use Equiv.swap l j; simp
+          exact Equiv.swap_apply_of_ne_of_ne heq this
+        by_cases hjl : j = l
+        . rcases hjl with rfl
+          use Equiv.swap k i; simp
+          apply Equiv.swap_apply_of_ne_of_ne
+          . symm; assumption
+          . symm; assumption
+        by_cases hilkj : i = l ∧ k = j
+        . rcases hilkj with ⟨rfl, rfl⟩
+          use Equiv.swap i j; simp
+        by_cases hil : i = l
+        . rcases hil with rfl
+          simp at hilkj
+          use Equiv.swap k i * Equiv.swap i j; simp
+          constructor
+          . have : (Equiv.swap i j) k = k := by
+              apply Equiv.swap_apply_of_ne_of_ne
+              assumption'
+            rw [this]
+            simp
+          . apply Equiv.swap_apply_of_ne_of_ne
+            assumption'
+            symm
+            assumption'
+        by_cases hil : k = j
+        . rcases hil with rfl
+          simp at hilkj
+          use Equiv.swap l j * Equiv.swap i j; simp
+          constructor
+          . apply Equiv.swap_apply_of_ne_of_ne
+            assumption'
+          . have : (Equiv.swap i j) l = l := by
+              apply Equiv.swap_apply_of_ne_of_ne
+              symm
+              assumption
+              symm
+              assumption
+            rw [this]
+            simp
+        use Equiv.swap l j * Equiv.swap k i
+        simp
+        constructor
+        . apply Equiv.swap_apply_of_ne_of_ne
+          assumption
+          assumption
+        . have : (Equiv.swap k i) l = l := by
+            apply Equiv.swap_apply_of_ne_of_ne
+            symm
+            assumption
+            symm
+            assumption
+          rw [this]
+          simp
+
+
+end VI
