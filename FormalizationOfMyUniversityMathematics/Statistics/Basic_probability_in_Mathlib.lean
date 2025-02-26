@@ -23,7 +23,7 @@ example (a b : ℝ) : ℙ (Set.Icc a b : Set ℝ) = ENNReal.ofReal (b - a) := Re
 
 example : ℙ (Set.univ : Set ℝ) = ⊤ := Real.volume_univ
 
-#check MeasurableSet
+-- #check MeasurableSet
 #check Measurable
 
 noncomputable example (Ω E : Type) [MeasurableSpace Ω] [MeasurableSpace E]
