@@ -35,7 +35,8 @@ noncomputable example (Ω E : Type) [MeasurableSpace Ω] [MeasurableSpace E]
   : (P.map X) S = P (X ⁻¹' S) := Measure.map_apply hX hS
 
 #check gaussianReal
-
+#synth PartialOrder ℕ
+#synth PartialOrder Prop
 #check DiscreteMeasurableSpace
 #check PMF
 #check PMF.toMeasure
