@@ -1,5 +1,6 @@
+
 import Mathlib
-import Paperproof
+
 #check LinearOrder
 #check le_total
 
