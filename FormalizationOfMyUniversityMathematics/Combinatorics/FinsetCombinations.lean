@@ -36,6 +36,55 @@ theorem nCr_symm (n r : ℕ) (rlen : r ≤ n) : nCr n r = nCr n (n-r) := by
   rw [Fintype.card_fin] at this
   exact this
 
+theorem nCr_eq_finset_card (α : Type) [Fintype α] [DecidableEq α] (r : ℕ) :
+    (Combinations α r).card = nCr (Fintype.card α) r := by
+  rw [nCr]
+  have : α ≃ Fin (Fintype.card α) := Fintype.equivFin α
+  have : Combinations α r ≃ Combinations (Fin (Fintype.card α)) r := by
+    exact Combinations_congr _ _ r this
+  exact Finset.card_eq_of_equiv this
+
+#check Finset.card_eq_of_equiv_fintype
+theorem nCr_eq_fintype_card (α : Type) [Fintype α] [DecidableEq α] (r : ℕ) :
+    Fintype.card (Combinations α r) = nCr (Fintype.card α) r := by
+  convert nCr_eq_finset_card _ _
+  simp
+  assumption
+
+#check Finset.powersetCard_one
+#check Finset.card_eq_one
+
+noncomputable
+def n_choose_1_equiv_fin_n (n : ℕ) :
+    {s : Finset (Fin n) | s.card = 1} ≃ Fin n where
+  toFun := by
+    intro ⟨s,hs⟩
+    rcases Finset.card_eq_one.mp hs with h
+    exact h.choose
+  invFun := fun a ↦ ⟨{a}, Finset.card_singleton a⟩
+  left_inv := by
+    intro ⟨s, hs⟩
+    simp
+    rcases Finset.card_eq_one.mp hs with h
+    have := h.choose_spec
+    symm
+    exact this
+  right_inv := by
+    intro a
+    simp
+
+theorem nCr_one (n : ℕ) :
+    nCr n 1 = n := by
+  rw [nCr]
+  nth_rw 4 [← Fintype.card_fin n]
+  apply Finset.card_eq_of_equiv_fintype
+  simp only [Combinations_card_iff]
+  exact n_choose_1_equiv_fin_n n
+
+-- theorem nCr_one (n : ℕ) :
+--     nCr n 1 = n := by
+--   simp [nCr]
+
 -- #check Finset.product
 -- #check Prod
 -- #check Sum
@@ -314,3 +363,27 @@ def choose_leader {α : Type} [Fintype α] [DecidableEq α] {k : ℕ} :
   right_inv := choose_leader_right_inv
 
 #check Fintype.card_sigma
+
+def nCr_choose_leader (n k : ℕ) :
+    nCr (n + 1) (k + 1) * (k + 1) = (n + 1) * nCr n k := by
+  have := @choose_leader (Fin (n + 1)) _ _ k
+  have := Fintype.card_congr this
+  rw [Fintype.card_sigma, Fintype.card_sigma] at this
+  simp_rw [nCr_eq_fintype_card] at this
+  rw [@Finset.sum_const_nat _ _ (k + 1)] at this
+  rw [@Finset.sum_const_nat _ _ (nCr n k)] at this
+  simp_rw [Finset.card_univ, nCr_eq_fintype_card, Fintype.card_fin] at this
+
+  change (Combinations (Fin (n + 1)) (k + 1)).card * (k + 1) = (Combinations (Fin (n + 1)) (1)).card * (nCr n k) at this
+  rw [← nCr,← nCr,nCr_one (n + 1)] at this
+  exact this
+
+  intro ⟨x, hx⟩ _
+  congr
+  rw [Fintype.card_coe, Finset.card_compl, Fintype.card_fin]
+  rw [Combinations_card_iff] at hx
+  rw [hx, Nat.add_sub_cancel]
+
+  intro ⟨x, hx⟩ _
+  convert nCr_one (k + 1)
+  simp [Combinations_card_iff.mp hx]
