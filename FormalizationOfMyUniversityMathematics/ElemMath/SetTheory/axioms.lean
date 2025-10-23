@@ -3,6 +3,7 @@ import Mathlib.Tactic.Choose
 import Mathlib.Tactic.Push
 import Mathlib.Tactic.Use
 import Mathlib.Tactic.NthRewrite
+import Mathlib.Tactic.SimpRw
 import Mathlib.Data.SProd
 
 class SetTheory (set : Type u) where
@@ -67,6 +68,8 @@ namespace AxiomOfEmptyset
 
 variable {set : Type u} [SetTheory set] [AxiomOfEmptyset set]
 
+theorem mem_empty_iff (x : set) : x ∈ (∅ : set) ↔ False := ⟨fun h ↦ not_mem_empty x h, False.elim⟩
+
 theorem empty_subset (S : set) : ∅ ⊆ S := by
   intro x hxempty
   have := not_mem_empty x
@@ -90,7 +93,7 @@ theorem empty_unique [AxiomOfExtensionality set] :
 end AxiomOfEmptyset
 
 -- let you can write `not_mem_empty` instead of `AxiomOfEmptyset.not_mem_empty`
-export AxiomOfEmptyset (not_mem_empty)
+export AxiomOfEmptyset (not_mem_empty mem_empty_iff)
 
 class AxiomOfReplacement (set : Type u) [SetTheory set] where
   replacement : (set → set → Prop) → set → set
@@ -107,49 +110,33 @@ class AxiomOfSpecification (set : Type u) [SetTheory set] where
 export AxiomOfSpecification (specification mem_specification_iff)
 
 -- Proposition 15.1.1
-theorem specification_is_redundant_in_ZFC {set : Type u} [SetTheory set]
-  [AxiomOfEmptyset set] [AxiomOfReplacement set] :
-  ∀ P : set → Prop, ∀ U : set, ∃ S : set, ∀ x, x ∈ S ↔ x ∈ U ∧ P x := by
-  intro P U
-  by_cases h : ∀ x ∈ U, ¬ P x
-  . use ∅
-    intro x
-    constructor
-    . intro h
-      exfalso
-      exact not_mem_empty x h
-    . intro ⟨hxU, hPx⟩
-      exfalso
-      exact h x hxU hPx
-  . push_neg at h
-    choose l hlU hPl using h
+noncomputable instance {set : Type u} [SetTheory set]
+  [AxiomOfEmptyset set] [AxiomOfReplacement set] : AxiomOfSpecification set where
+  specification P U :=
+    haveI := Classical.propDecidable
+    if h : ∃ x ∈ U, P x then
+      let l := Classical.choose h
+      let Q x y := P x ∧ y = x ∨ ¬ P x ∧ y = l
+      replacement Q U
+    else
+      ∅
+  mem_specification_iff P U y := by
+    by_cases h : ∃ x ∈ U, P x
+    case neg =>
+      simp [h]
+      constructor
+      . intro h
+        exfalso
+        exact not_mem_empty _ h
+      . intro ⟨hyU, hPy⟩
+        exfalso
+        exact h ⟨y, hyU, hPy⟩
+    let l := Classical.choose h
+    have ⟨(hlU : l ∈ U), (hPl : P l)⟩ := Classical.choose_spec h
     let Q x y := P x ∧ y = x ∨ ¬ P x ∧ y = l
-    have hQ : ∀ x, ∃! y, Q x y := by
-      intro x
-      by_cases h : P x
-      . use x
-        dsimp
-        constructor
-        . unfold Q
-          left
-          exact ⟨h, rfl⟩
-        . intro y hy
-          apply hy.elim
-          . exact fun h' ↦ h'.2
-          . exact fun h' ↦ (h'.1 h).elim
-      . use l
-        dsimp
-        constructor
-        . unfold Q
-          right
-          exact ⟨h, rfl⟩
-        . intro y hy
-          apply hy.elim
-          . exact fun h' ↦ (h h'.1).elim
-          . exact fun h' ↦ h'.2
-    use replacement Q U
-    intro y
-    rw [mem_replacement_iff Q U hQ]
+    simp [h]
+    change _ ∈ replacement Q U ↔ _
+    rw [mem_replacement_iff Q U]
     constructor
     . rintro ⟨x, hxU, hQxy⟩
       apply hQxy.elim
@@ -161,12 +148,28 @@ theorem specification_is_redundant_in_ZFC {set : Type u} [SetTheory set]
       use y, hyU
       left
       exact ⟨hPy, rfl⟩
-
-
-noncomputable instance {set : Type u} [SetTheory set]
-  [AxiomOfEmptyset set] [AxiomOfReplacement set] : AxiomOfSpecification set where
-  specification P U := Classical.choose (specification_is_redundant_in_ZFC P U)
-  mem_specification_iff P U := Classical.choose_spec (specification_is_redundant_in_ZFC P U)
+    intro x
+    by_cases h : P x
+    . use x
+      dsimp
+      constructor
+      . unfold Q
+        left
+        exact ⟨h, rfl⟩
+      . intro y hy
+        apply hy.elim
+        . exact fun h' ↦ h'.2
+        . exact fun h' ↦ (h'.1 h).elim
+    . use l
+      dsimp
+      constructor
+      . unfold Q
+        right
+        exact ⟨h, rfl⟩
+      . intro y hy
+        apply hy.elim
+        . exact fun h' ↦ (h h'.1).elim
+        . exact fun h' ↦ h'.2
 
 class AxiomOfPowerset (set : Type u) [SetTheory set] where
   powerset : set → set
@@ -189,6 +192,8 @@ export AxiomOfUnion (mem_union_iff)
 class AxiomOfsUnion (set : Type u) [SetTheory set] where
   sUnion : set → set
   mem_sUnion_iff (S : set) : ∀ x, x ∈ sUnion S ↔ ∃ A ∈ S, x ∈ A
+
+export AxiomOfsUnion (mem_sUnion_iff)
 
 prefix:110 "⋃₀ " => AxiomOfsUnion.sUnion
 
@@ -334,37 +339,165 @@ instance (set : Type u) [SetTheory set] [AxiomOfSpecification set] : AxiomOfInte
     change _ ∈ specification (. ∈ T) S ↔ _
     rw [mem_specification_iff]
 
-instance (set : Type u) [SetTheory set]
-  [AxiomOfReplacement set] [AxiomOfEmptyset set] [AxiomOfPowerset set] : AxiomOfSingleton set where
-  singleton a := replacement (fun x y ↦ y = a) (𝒫 ∅)
-  mem_singleton_iff a := by
-    intro y
-    change _ ∈ replacement (fun x y ↦ y = a) (𝒫 ∅) ↔ _
-    simp [mem_replacement_iff, mem_powerset_iff]
-    exact fun _ ↦ ⟨∅, AxiomOfEmptyset.empty_subset _⟩
+class AxiomOfPairing (set : Type u) [SetTheory set] where
+  pair : set → set → set
+  mem_pair_iff S T : ∀ x, x ∈ pair S T ↔ x = S ∨ x = T
 
-instance (set : Type u) [SetTheory set]
-  [AxiomOfSingleton set] [AxiomOfUnion set] [AxiomOfExtensionality set] : AxiomOfOrderedPair set where
-  ordered_pair a b := {{a}} ∪ {{a} ∪ {b}}
+export AxiomOfPairing (pair mem_pair_iff)
+
+class AxiomOfInsert (set : Type u) [SetTheory set] where
+  insert : set → set → set
+  mem_insert_iff' x S : ∀ y, y ∈ insert x S ↔ y = x ∨ y ∈ S -- insert x S = {x} ∪ S
+
+-- export AxiomOfInsert (mem_insert_iff)
+
+instance (set : Type u) [SetTheory set] [AxiomOfInsert set] : Insert set set := ⟨AxiomOfInsert.insert⟩
+
+theorem mem_insert_iff (set : Type u) [SetTheory set] [AxiomOfInsert set] (x S : set) :
+  ∀ y, y ∈ insert x S ↔ y = x ∨ y ∈ S := AxiomOfInsert.mem_insert_iff' x S
+
+instance (set : Type u) [SetTheory set] [AxiomOfExtensionality set]
+  [AxiomOfEmptyset set] [AxiomOfInsert set]  [AxiomOfSingleton set] : LawfulSingleton set set where
+  insert_empty_eq x := by
+    -- simp [extensionality, mem_insert_iff, mem_singleton_iff, not_mem_empty]
+    rw [extensionality]
+    intro h
+    rw [mem_insert_iff, mem_empty_iff, mem_singleton_iff, or_false]
+
+example (set : Type u) [SetTheory set] [AxiomOfExtensionality set]
+  [AxiomOfEmptyset set] [AxiomOfInsert set] [AxiomOfSingleton set]
+  (a b c : set) : ∀ x, x ∈ ({a,b,c} : set) ↔ x = a ∨ x = b ∨ x = c := by
+  intro x
+  rw [mem_insert_iff, mem_insert_iff, mem_singleton_iff]
+
+instance (set : Type u) [SetTheory set] [AxiomOfExtensionality set]
+  [AxiomOfEmptyset set] [AxiomOfInsert set] [AxiomOfSingleton set] : AxiomOfOrderedPair set where
+  ordered_pair a b := {{a}, {a, b}}
   ordered_pair_inj a b a' b' := by
     constructor
     case mpr => rintro ⟨rfl, rfl⟩; rfl
     intro h
+    have key (x y z : set) : ({x} : set) = {y, z} ↔ x = y ∧ x = z ∧ y = z:= by
+      constructor
+      . intro h
+        have hy : y ∈ ({x} : set) := by simp [h, mem_insert_iff]
+        have hz : z ∈ ({x} : set) := by simp [h, mem_insert_iff, mem_singleton_iff]
+        simp [ mem_singleton_iff] at hy hz
+        exact ⟨hy.symm, hz.symm, hy.trans hz.symm⟩
+      . rintro ⟨rfl, rfl, _⟩
+        simp [extensionality, mem_insert_iff, mem_singleton_iff]
     by_cases heq : a = b
-    . sorry
-    . sorry
+    . rw [heq, ← (key b b b).mpr (by simp), ← (key {b} {b} {b}).mpr (by simp), key, key] at h
+      obtain ⟨_, ⟨hba', hbb', ha'b'⟩, _⟩ := h
+      exact ⟨heq.trans hba', hbb'⟩
+    by_cases heq' : a' = b'
+    . rw [Eq.comm, heq', ← (key b' b' b').mpr (by simp), ← (key {b'} {b'} {b'}).mpr (by simp), key, key] at h
+      obtain ⟨_, ⟨hb'a, hb'b, hab⟩, _⟩ := h
+      exact ⟨hb'a.symm.trans heq'.symm, hb'b.symm⟩
+    have hab : {a, b} ∈ ({{a'}, {a', b'}} : set) := by simp [← h, mem_insert_iff, mem_singleton_iff]
+    rw [mem_insert_iff, mem_singleton_iff, Eq.comm,
+        key, or_iff_right (fun h' ↦ heq h'.2.2)] at hab
+    have ha : {a} ∈ ({{a'}, {a', b'}} : set) := by simp [← h, mem_insert_iff, mem_singleton_iff]
+    rw [mem_insert_iff, mem_singleton_iff, Eq.comm,
+        key, or_iff_left (fun h' ↦ heq' h'.2.2)] at ha
+    have ha : a ∈ ({a'} : set):= by simp [ha, mem_singleton_iff]
+    rw [mem_singleton_iff] at ha
+    have hb : b ∈ ({a, b'} : set) := by simp [ha, ← hab, mem_insert_iff, mem_singleton_iff]
+    rw [mem_insert_iff, mem_singleton_iff, or_iff_right (fun h' ↦ heq h'.symm)] at hb
+    exact ⟨ha, hb⟩
+
+instance (set : Type u) [SetTheory set] [AxiomOfExtensionality set]
+  [AxiomOfEmptyset set] [AxiomOfInsert set]  [AxiomOfSingleton set]
+  [AxiomOfUnion set] [AxiomOfPowerset set] [AxiomOfSpecification set] : AxiomOfProduct set where
+  product A B := specification (fun x ↦ ∃ a ∈ A, ∃ b ∈ B, x = (a, b)ˢ) (𝒫 (𝒫 (A ∪ B)))
+  mem_product_iff A B x := by
+    change x ∈ specification _ _ ↔ _
+    simp [mem_specification_iff]
+    intro a ha b hb h
+    rw [mem_powerset_iff]
+    change x = {{a}, {a, b}} at h
+    rw [h]
+    intro x hx
+    rw [mem_insert_iff, mem_singleton_iff] at hx
+    apply hx.elim
+    . rintro rfl
+      simp [mem_powerset_iff]
+      intro x hx
+      simp [mem_singleton_iff, mem_union_iff] at hx ⊢
+      left
+      rw [hx]
+      exact ha
+    . rintro rfl
+      simp [mem_powerset_iff]
+      intro x hx
+      simp [mem_singleton_iff, mem_insert_iff, mem_union_iff] at hx ⊢
+      obtain rfl | rfl := hx
+      . left; exact ha
+      . right; exact hb
 
 instance (set : Type u) [SetTheory set]
-  [AxiomOfOrderedPair set] [AxiomOfUnion set] [AxiomOfPowerset set] [AxiomOfSpecification set] : AxiomOfProduct set where
-  product A B := specification (fun x ↦ ∃ a ∈ A, ∃ b ∈ B, x = (a, b)ˢ) (𝒫 (𝒫 (A ∪ B)))
-  mem_product_iff A B := by sorry
+  [AxiomOfExtensionality set] [AxiomOfReplacement set] [AxiomOfEmptyset set] [AxiomOfPowerset set]: AxiomOfPairing set where
+  pair a b := replacement (fun x y ↦ x = ∅ ∧ y = a ∨ x ≠ ∅ ∧ y = b) (𝒫 𝒫 ∅)
+  mem_pair_iff a b y := by
+    rw [mem_replacement_iff]
+    . constructor
+      . rintro ⟨x, _, (⟨_, ha⟩ | ⟨_, hb⟩)⟩
+        . exact Or.inl ha
+        . exact Or.inr hb
+      . rintro (rfl | rfl)
+        . refine ⟨∅, ?_, ?_⟩
+          . rw [mem_powerset_iff]
+            exact AxiomOfEmptyset.empty_subset _
+          . left
+            exact ⟨rfl, rfl⟩
+        . refine ⟨𝒫 ∅, ?_, ?_⟩
+          . rw [mem_powerset_iff]
+            exact AxiomOfExtensionality.subset_refl _
+          . right
+            refine ⟨fun h ↦ ?_, rfl⟩
+            have : ∅ ∈ (∅ : set) := by
+              nth_rw 1 [← h, mem_powerset_iff]
+              exact AxiomOfEmptyset.empty_subset _
+            exact not_mem_empty _ this
+    . intro x
+      by_cases h : x = ∅
+      . refine ⟨a, ?_, ?_⟩
+        . simp [h]
+        intro y h'
+        rw [or_iff_left fun h' ↦ h'.1 h] at h'
+        exact h'.2
+      . refine ⟨b, ?_, ?_⟩
+        . simp [h]
+        intro y h'
+        rw [or_iff_right fun h' ↦ h h'.1] at h'
+        exact h'.2
+
+instance (set : Type u) [SetTheory set]
+  [AxiomOfPairing set] [AxiomOfsUnion set] : AxiomOfUnion set where
+  union a b := ⋃₀ (pair a b)
+  mem_union_iff a b x:= by
+    change x ∈ ⋃₀ (pair a b) ↔ _
+    simp [mem_sUnion_iff, mem_pair_iff]
+
+instance (set : Type u) [SetTheory set]
+  [AxiomOfPairing set] : AxiomOfSingleton set where
+  singleton a := pair a a
+  mem_singleton_iff a x := by
+    change _ ∈ pair a a ↔ _
+    simp [mem_pair_iff]
+
+instance (set : Type u) [SetTheory set]
+  [AxiomOfSingleton set] [AxiomOfUnion set] : AxiomOfInsert set where
+  insert x S := {x} ∪ S
+  mem_insert_iff' x S y := by
+    simp [mem_union_iff, mem_singleton_iff]
 
 class ZFC (set : Type u) [SetTheory set] extends
   AxiomOfExtensionality set,
   AxiomOfEmptyset set,
   AxiomOfReplacement set,
   AxiomOfPowerset set,
-  AxiomOfUnion set,
+  AxiomOfsUnion set,
   AxiomOfRegularity set,
   AxiomOfInfinity set,
   AxiomOfChoice set

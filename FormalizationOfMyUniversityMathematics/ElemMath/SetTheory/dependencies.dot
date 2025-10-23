@@ -1,0 +1,99 @@
+digraph ZF_deps {
+  rankdir=LR 
+  node [shape=box] 
+
+
+  /* need A to state B, A -> B */
+  AxiomOfExtensionality 
+  AxiomOfEmptyset 
+  AxiomOfReplacement 
+  AxiomOfSpecification 
+  AxiomOfPowerset 
+  AxiomOfUnion 
+  AxiomOfsUnion 
+  AxiomOfInter 
+  AxiomOfsInter 
+  AxiomOfSingleton 
+
+  
+  AxiomOfInfinity 
+  {AxiomOfEmptyset, AxiomOfUnion, AxiomOfSingleton} -> AxiomOfInfinity
+
+  AxiomOfRegularity 
+  {AxiomOfEmptyset, AxiomOfInter} -> AxiomOfRegularity
+
+  AxiomOfOrderedPair 
+  AxiomOfProduct 
+  AxiomOfOrderedPair -> AxiomOfProduct
+
+  AxiomOfChoice 
+  {AxiomOfEmptyset, AxiomOfOrderedPair, 
+    AxiomOfProduct, AxiomOfPowerset} -> AxiomOfChoice
+
+  is_function 
+  {AxiomOfOrderedPair, AxiomOfProduct} -> is_function
+  function 
+  {AxiomOfOrderedPair, AxiomOfProduct, 
+    AxiomOfSpecification, AxiomOfPowerset} -> function
+
+  AxiomOfPairing 
+  AxiomOfInsert 
+
+
+
+
+
+  /* A implies B, A -> B */
+  edge [style=dashed, color=gray]
+
+  ZFC
+  ZFC -> {
+    AxiomOfExtensionality,
+    AxiomOfEmptyset,
+    AxiomOfReplacement,
+    AxiomOfPowerset,
+    AxiomOfsUnion,
+    AxiomOfRegularity,
+    AxiomOfInfinity,
+    AxiomOfChoice
+  }
+  { rank=same; 
+    AxiomOfExtensionality;
+    AxiomOfEmptyset;
+    AxiomOfReplacement;
+    AxiomOfPowerset;
+    AxiomOfsUnion;
+    AxiomOfRegularity;
+    AxiomOfInfinity;
+    AxiomOfChoice}
+
+  AxiomOfExtensionality -> 
+  AxiomOfEmptyset ->
+  AxiomOfReplacement ->
+  AxiomOfPowerset->
+  AxiomOfsUnion->
+  AxiomOfRegularity->
+  AxiomOfInfinity->
+  AxiomOfChoice [style=invis, weight=10]
+
+
+  {AxiomOfEmptyset, AxiomOfReplacement} -> AxiomOfSpecification
+  AxiomOfSpecification -> AxiomOfInter
+  LawfulSingleton [xlabel="notaion {a,b,c}"]
+  {AxiomOfExtensionality, AxiomOfEmptyset,
+    AxiomOfInsert, AxiomOfSingleton} -> LawfulSingleton
+  
+  {AxiomOfExtensionality, AxiomOfEmptyset,
+    AxiomOfInsert, AxiomOfSingleton} -> AxiomOfOrderedPair
+  {AxiomOfExtensionality, 
+    AxiomOfEmptyset, AxiomOfInsert, AxiomOfSingleton,
+    AxiomOfUnion, AxiomOfPowerset, AxiomOfSpecification} -> AxiomOfProduct
+
+  {AxiomOfExtensionality, AxiomOfReplacement,
+    AxiomOfEmptyset, AxiomOfPowerset} -> AxiomOfPairing
+
+  {AxiomOfPairing, AxiomOfsUnion} -> AxiomOfUnion 
+  {AxiomOfPairing} -> AxiomOfSingleton
+  {AxiomOfSingleton, AxiomOfUnion} -> AxiomOfInsert
+
+}
