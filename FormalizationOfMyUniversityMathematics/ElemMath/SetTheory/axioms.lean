@@ -189,13 +189,15 @@ class AxiomOfUnion (set : Type u) [SetTheory set] extends HasUnion set where
 
 export AxiomOfUnion (mem_union_iff)
 
-class AxiomOfsUnion (set : Type u) [SetTheory set] where
+class HassUnion (set : Type u) where
   sUnion : set → set
-  mem_sUnion_iff (S : set) : ∀ x, x ∈ sUnion S ↔ ∃ A ∈ S, x ∈ A
+
+prefix:110 "⋃₀ " => HassUnion.sUnion
+
+class AxiomOfsUnion (set : Type u) [SetTheory set] extends HassUnion set where
+  mem_sUnion_iff (S : set) : ∀ x, x ∈ ⋃₀ S ↔ ∃ A ∈ S, x ∈ A
 
 export AxiomOfsUnion (mem_sUnion_iff)
-
-prefix:110 "⋃₀ " => AxiomOfsUnion.sUnion
 
 class HasInter (set : Type u) where
   inter : set → set → set
@@ -207,11 +209,15 @@ class AxiomOfInter (set : Type u) [SetTheory set] extends HasInter set  where
 
 export AxiomOfInter (mem_inter_iff)
 
-class AxiomOfsInter (set : Type u) [SetTheory set] where
+class HassInter (set : Type u) where
   sInter : set → set
-  mem_sInter_iff (S : set) : ∀ x, x ∈ sInter S ↔ ∀ A ∈ S, x ∈ A
 
-prefix:110 "∩₀ " => AxiomOfsInter.sInter
+prefix:110 "⋂₀ " => HassInter.sInter
+
+class AxiomOfsInter (set : Type u) [SetTheory set] extends HassInter set where
+  mem_sInter_iff (S : set) : ∀ x, x ∈ ⋂₀ S ↔ ∀ A ∈ S, x ∈ A
+
+export AxiomOfsInter (mem_sInter_iff)
 
 class HasSingleton (set : Type u) where
   singleton : set → set
