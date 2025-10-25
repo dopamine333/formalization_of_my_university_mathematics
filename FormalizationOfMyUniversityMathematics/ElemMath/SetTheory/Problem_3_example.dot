@@ -1,0 +1,60 @@
+digraph Topology {
+  rankdir=TB
+  node [fontname="JetBrains Mono", fontsize=10, shape=box, style=rounded]
+
+  # === Main nodes (only names) ===
+  TopologicalSpace [label="TopologicalSpace"]
+  IsClosed [label="IsClosed"]
+  closure [label="closure"]
+  Dense [label="Dense"]
+  BaireSpace [label="BaireSpace"]
+
+  # === Notes (detailed explanations) ===
+  note_TopologicalSpace [shape=note, label=
+  "IsOpen : Set X → Prop
+  isOpen_univ : IsOpen univ
+  isOpen_inter (s t : Set X) :
+  isOpen_sUnion (s : Set (Set X)) :
+    (∀ t ∈ s, IsOpen t) → IsOpen (⋃₀ s)"]
+
+  note_IsClosed [shape=note, label=
+  "isOpen_compl : IsOpen sᶜ"]
+
+  note_closure [shape=note, label=
+  "closure s = ⋂₀ {t | IsClosed t ∧ s ⊆ t}"]
+
+  note_Dense [shape=note, label=
+  " Dense s = ∀ x, x ∈ closure s "]
+
+  note_BaireSpace [shape=note, label=
+  "baire_property (f : ℕ → Set X) :
+    (∀ n, IsOpen (f n)) → (∀ n, Dense (f n)) → Dense (⋂ n, f n)"]
+
+  # === Relationships between definitions ===
+  TopologicalSpace -> IsClosed
+  IsClosed -> closure
+  closure -> Dense
+  Dense -> BaireSpace
+  TopologicalSpace -> BaireSpace
+
+  # === Notes connections (dashed) ===
+  note_TopologicalSpace -> TopologicalSpace [style=dashed, arrowhead=open]
+  note_IsClosed -> IsClosed [style=dashed, arrowhead=open]
+  note_closure -> closure [style=dashed, arrowhead=open]
+  note_Dense -> Dense [style=dashed, arrowhead=open]
+  note_BaireSpace -> BaireSpace [style=dashed, arrowhead=open]
+
+
+  # === Invisible edges between notes to align them ===
+  note_TopologicalSpace -> note_IsClosed [style=invis]
+  note_IsClosed -> note_closure [style=invis]
+  note_closure -> note_Dense [style=invis]
+  note_Dense -> note_BaireSpace [style=invis]
+
+  # === Rank alignment (same level for each concept + note) ===
+  {rank=same; TopologicalSpace; note_TopologicalSpace}
+  {rank=same; IsClosed; note_IsClosed}
+  {rank=same; closure; note_closure}
+  {rank=same; Dense; note_Dense}
+  {rank=same; BaireSpace; note_BaireSpace}
+}
