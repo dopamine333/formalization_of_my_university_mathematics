@@ -350,7 +350,8 @@ noncomputable instance prerequisitesForChoiceSatisfied (set : Type u) [SetTheory
       . left; exact ha
       . right; exact hb
 
-class ZFC (set : Type u) [SetTheory set] extends
+class ZFC (set : Type u) extends
+  SetTheory set,
   AxiomOfExtensionality set,
   AxiomOfEmptyset set,
   AxiomOfReplacement set,
