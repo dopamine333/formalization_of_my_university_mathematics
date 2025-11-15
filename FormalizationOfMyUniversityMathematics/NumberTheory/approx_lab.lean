@@ -189,3 +189,32 @@ theorem IsEquiv.equivWithAbs_image_mem_nhds_zero'
   -- rw [Metric.mem_ball, dist_zero_right, WithAbs.norm_eq_abv, ← funext_iff.1 hvw,
   --   rpow_lt_rpow_iff (v.nonneg _) hε.le hc] at hx
   -- simpa [WithAbs.norm_eq_abv]
+
+noncomputable example {K : Type u} [Field K] (v : AbsoluteValue K ℝ) :
+  TopologicalSpace (WithAbs v) := inferInstance
+
+set_option trace.Meta.synthInstance true in
+noncomputable example {K : Type u} [Field K] (v : AbsoluteValue K ℝ) :
+  IsTopologicalDivisionRing (WithAbs v) := inferInstance
+
+#check ValuativeRel
+#check IsNonarchimedeanLocalField
+#check IsNonarchimedeanLocalField.instIsTopologicalDivisionRing
+#check IsValuativeTopology
+#check Valued.isTopologicalDivisionRing
+
+#check NormedDivisionRing.to_isTopologicalDivisionRing
+
+#check tendsto_inv₀
+#check tendsto_inv_iff₀
+#check tendsto_inv_cobounded
+#check eventually_cobounded_le_norm
+#check tendsto_norm_cobounded_atTop
+#check Bornology.eventually_ne_cobounded
+
+#check Filter.Eventually.and
+#check Filter.inter_mem
+#check Filter.iInter_mem
+#check Filter.eventually_all
+
+#check WithAbs

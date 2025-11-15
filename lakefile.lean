@@ -7,11 +7,13 @@ package «formalization_of_my_university_mathematics» where
     ⟨`pp.unicode.fun, true⟩ -- pretty-prints `fun a ↦ b`
   ]
   -- add any additional package configuration options here
+  moreLinkArgs := #[
+    "-L./.lake/packages/LeanCopilot/.lake/build/lib",
+    "-lctranslate2"
+  ]
+require mathlib from git "https://github.com/leanprover-community/mathlib4.git" @ "v4.24.0"
 
-require mathlib from git
-  "https://github.com/leanprover-community/mathlib4.git"
-
-require Paperproof from git "https://github.com/Paper-Proof/paperproof.git"@"main"/"lean"
+require LeanCopilot from git "https://github.com/lean-dojo/LeanCopilot.git" @ "v4.24.0"
 
 @[default_target]
 lean_lib «FormalizationOfMyUniversityMathematics» where
