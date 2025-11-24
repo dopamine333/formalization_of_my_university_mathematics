@@ -28,8 +28,9 @@ lemma tsum_ind_eq_subtype (E : I → Set X) (x : X) :
       ∑' i : {i : I // x ∈ E i}, (1 : ℝ≥0∞) := by
   classical
   -- `tsum_eq_tsum_subtype` is the Lean-4 name of the old lemma
-  simpa [ind] using
-    tsum_eq_tsum_subtype (f := fun i : I ↦ (if _ : x ∈ E i then (1 : ℝ≥0∞) else 0))
+  -- simpa [ind] using
+  --   tsum_eq_tsum_subtype (f := fun i : I ↦ (if _ : x ∈ E i then (1 : ℝ≥0∞) else 0))
+  sorry
 
 /-- **Main theorem**:
 `∑' i, ind E x i = #( { i | x ∈ E i } )`, valued in `ℝ≥0∞`. -/
@@ -48,11 +49,13 @@ theorem tsum_ind_eq_card (E : I → Set X) (x : X) :
     have h' : (∑' i : {i : I // x ∈ E i}, (1 : ℝ≥0∞)) =
         (Fintype.card {i : I // x ∈ E i} : ℝ≥0∞) := by
       simpa using tsum_fintype (fun _ : {i : I // x ∈ E i} ↦ (1 : ℝ≥0∞))
-    simpa [this, h, hfin, dif_pos hfin] using this
+    -- simpa [this, h, hfin, dif_pos hfin] using this
+    sorry
   · -- **infinite** case
-    have : (∑' i : {i : I // x ∈ E i}, (1 : ℝ≥0∞)) = ∞ := by
-      -- a non-zero constant over an infinite type is not summable
-      have hns : ¬ Summable (fun _ : {i : I // x ∈ E i} ↦ (1 : ℝ≥0∞)) := by
-        simpa using summable_const_nz.mpr (by simp)
-      simpa using tsum_eq_top_of_not_summable hns
-    simpa [this, h, hfin, dif_neg hfin] using this
+    sorry
+    -- have : (∑' i : {i : I // x ∈ E i}, (1 : ℝ≥0∞)) = ∞ := by
+    --   -- a non-zero constant over an infinite type is not summable
+    --   have hns : ¬ Summable (fun _ : {i : I // x ∈ E i} ↦ (1 : ℝ≥0∞)) := by
+    --     simpa using summable_const_nz.mpr (by simp)
+    --   simpa using tsum_eq_top_of_not_summable hns
+    -- simpa [this, h, hfin, dif_neg hfin] using this

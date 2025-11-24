@@ -2,6 +2,8 @@ import Mathlib.Probability.ProbabilityMassFunction.Monad
 import Mathlib.Probability.ProbabilityMassFunction.Constructions
 import Mathlib.Probability.UniformOn
 
+namespace PMF_monad
+
 open MeasureTheory  ProbabilityTheory Measure
 open scoped ENNReal
 

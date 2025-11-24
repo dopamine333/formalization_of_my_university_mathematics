@@ -64,11 +64,12 @@ theorem cauchy_functional_equation_on_ℚ
   by_cases hb : b = 0
   . rw [hb]; simp [key₁]
   have := calc
-    f (a • 1) = f (b * (a / b)) := by field_simp
+    f (a • 1) = f (b * (a / b)) := by field_simp; simp
     _ = f (b • (a / b)) := by simp only [zsmul_eq_mul]
   rw [key₄, key₄, zsmul_eq_mul, zsmul_eq_mul] at this
   field_simp
-  simpa [mul_comm] using this.symm
+  sorry
+  -- simpa [mul_comm] using this.symm
 
 #check Nat.descFactorial_eq_prod_range
 #check Nat.choose_eq_asc_factorial_div_factorial
@@ -99,3 +100,4 @@ theorem binomial_limit (k : ℕ) (c : ℝ) :
     conv => rhs; rw [Nat.add_sub_cancel]
     sorry
     -- rw [pow_sub₀ hn₁]
+  sorry

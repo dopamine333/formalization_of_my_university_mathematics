@@ -1,4 +1,3 @@
-
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Topology.Algebra.Order.Floor
 import Mathlib.Topology.MetricSpace.Contracting
@@ -378,6 +377,7 @@ theorem picard_theorem
         . apply Filter.Eventually.mono (p := (. ≤ r / M))
           . refine mem_nhdsWithin_of_mem_nhds (Iic_mem_nhds ?_)
             field_simp [lt_of_le_of_ne' M_nonneg M0]
+            linarith
           . have M0 : M > 0 := lt_of_le_of_ne' M_nonneg M0
             intro x hx
             rwa [← le_div_iff₀' M0]

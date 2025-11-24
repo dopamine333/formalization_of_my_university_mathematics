@@ -4,7 +4,7 @@ open Nat Nat.Primrec
 
 #check Nat.rec
 
-rec : ℕ → (ℕ → ℕ → ℕ) → (ℕ → ℕ)
+-- rec : ℕ → (ℕ → ℕ → ℕ) → (ℕ → ℕ)
 #check Nat.Primrec
 #check Nat.Primrec.prec
 #check Nat.unpaired

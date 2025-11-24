@@ -51,6 +51,8 @@ def SetNotation.is_a_function {set : Type u} [SetNotation set]
   (f A B : set) : Prop := f ⊆' A ×ˢ' B ∧ ∀ x ∈' A, ∃! y, (x, y)' ∈' f
 export SetNotation (is_a_function)
 
+namespace redundten_zfc
+
 -- Definition 14.1 (unfinished)
 class ZFC (set : Type u) extends SetNotation set where
   extensionality (A B : set) : A = B ↔ (∀ x, x ∈' A ↔ x ∈' B)

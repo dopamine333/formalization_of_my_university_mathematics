@@ -2,6 +2,8 @@ import Mathlib.Analysis.ODE.Gronwall
 open Set Real
 open scoped Topology NNReal
 
+namespace ode_unique_done
+
 theorem my_Icc_subset_of_forall_exists_gt
   {α : Type u} [ConditionallyCompleteLinearOrder α] [TopologicalSpace α] [OrderTopology α]
   {a b : α} {s : Set α}

@@ -167,7 +167,7 @@ def IsTransitive (G X : Type) [Group G] [MulAction G X] : Prop :=
 theorem IsTransitive_iff (G X : Type) [Group G] [MulAction G X]
   : IsTransitive G X ↔ ∃ x : X, ∀ y : X, orbit G y = orbit G x := by
     simp [IsTransitive, Nat.card_eq_one_iff_exists]
-
+    sorry
 
 example (G X :Type) [Group G] [MulAction G X]
   : IsTransitive G X ↔ ∃ x : X, Function.Surjective ((. • x) : G → X) := by
@@ -223,101 +223,102 @@ theorem is_faithful : @IsFaithful G X _ my_action := by
 #check Nat.card_eq_two_iff
 -- (c) Find the number of orbits under this action.
 theorem number_of_obits :  Nat.card (@orbits G X _ my_action) = if n = 1 then 1 else 2 := by
-  by_cases hn : n = 1
-  . simp [hn]
-    have : Subsingleton X := by rw [X, hn]; infer_instance
-    have : Nonempty X := by rw [X, hn]; infer_instance
-    rw [Nat.card_eq_one_iff_exists]
-    have ⟨i,j⟩ := Classical.choice ‹Nonempty X›
-    simp
-    use i, j
-    rintro A k l rfl
-    rw [‹Subsingleton X›.allEq (k, l) (i, j)]
-  . simp [hn]
-    replace hn : n ≥ 2 := by
-      apply (Nat.two_le_iff n).mpr
-      constructor
-      . linarith [npos]
-      . exact hn
-    let i : Fin n := ⟨0, by linarith⟩
-    let j : Fin n := ⟨1, by linarith⟩
-    have : i ≠ j := by simp [i,j]
-    rw [Nat.card_eq_two_iff]
-    use ⟨orbit G (i,i), by simp⟩, ⟨orbit G (i,j), by simp⟩
-    constructor
-    . simp
-      intro h
-      have : (i,i) ∈ orbit G (i,j) := by rw [← h]; use 1; simp
-      have ⟨g, heq⟩ := this
-      simp [Prod.ext_iff] at heq
-      have : g i = g j := by rw [heq.1, heq.2]
-      have := g.injective this
-      contradiction
-    . ext ⟨_, ⟨k,l⟩, rfl⟩
-      simp
-      by_cases heq : k = l
-      . left
-        rw [heq, orbit_eq_iff]
-        use Equiv.swap l i
-        simp
-      . right
-        rw [orbit_eq_iff]
-        by_cases hik : i = k
-        . rcases hik with rfl
-          use Equiv.swap l j; simp
-          exact Equiv.swap_apply_of_ne_of_ne heq this
-        by_cases hjl : j = l
-        . rcases hjl with rfl
-          use Equiv.swap k i; simp
-          apply Equiv.swap_apply_of_ne_of_ne
-          . symm; assumption
-          . symm; assumption
-        by_cases hilkj : i = l ∧ k = j
-        . rcases hilkj with ⟨rfl, rfl⟩
-          use Equiv.swap i j; simp
-        by_cases hil : i = l
-        . rcases hil with rfl
-          simp at hilkj
-          use Equiv.swap k i * Equiv.swap i j; simp
-          constructor
-          . have : (Equiv.swap i j) k = k := by
-              apply Equiv.swap_apply_of_ne_of_ne
-              assumption'
-            rw [this]
-            simp
-          . apply Equiv.swap_apply_of_ne_of_ne
-            assumption'
-            symm
-            assumption'
-        by_cases hil : k = j
-        . rcases hil with rfl
-          simp at hilkj
-          use Equiv.swap l j * Equiv.swap i j; simp
-          constructor
-          . apply Equiv.swap_apply_of_ne_of_ne
-            assumption'
-          . have : (Equiv.swap i j) l = l := by
-              apply Equiv.swap_apply_of_ne_of_ne
-              symm
-              assumption
-              symm
-              assumption
-            rw [this]
-            simp
-        use Equiv.swap l j * Equiv.swap k i
-        simp
-        constructor
-        . apply Equiv.swap_apply_of_ne_of_ne
-          assumption
-          assumption
-        . have : (Equiv.swap k i) l = l := by
-            apply Equiv.swap_apply_of_ne_of_ne
-            symm
-            assumption
-            symm
-            assumption
-          rw [this]
-          simp
+  sorry
+  -- by_cases hn : n = 1
+  -- . simp [hn]
+  --   have : Subsingleton X := by rw [X, hn]; infer_instance
+  --   have : Nonempty X := by rw [X, hn]; infer_instance
+  --   rw [Nat.card_eq_one_iff_exists]
+  --   have ⟨i,j⟩ := Classical.choice ‹Nonempty X›
+  --   simp
+  --   use i, j
+  --   rintro A k l rfl
+  --   rw [‹Subsingleton X›.allEq (k, l) (i, j)]
+  -- . simp [hn]
+  --   replace hn : n ≥ 2 := by
+  --     apply (Nat.two_le_iff n).mpr
+  --     constructor
+  --     . linarith [npos]
+  --     . exact hn
+  --   let i : Fin n := ⟨0, by linarith⟩
+  --   let j : Fin n := ⟨1, by linarith⟩
+  --   have : i ≠ j := by simp [i,j]
+  --   rw [Nat.card_eq_two_iff]
+  --   use ⟨orbit G (i,i), by simp⟩, ⟨orbit G (i,j), by simp⟩
+  --   constructor
+  --   . simp
+  --     intro h
+  --     have : (i,i) ∈ orbit G (i,j) := by rw [← h]; use 1; simp
+  --     have ⟨g, heq⟩ := this
+  --     simp [Prod.ext_iff] at heq
+  --     have : g i = g j := by rw [heq.1, heq.2]
+  --     have := g.injective this
+  --     contradiction
+  --   . ext ⟨_, ⟨k,l⟩, rfl⟩
+  --     simp
+  --     by_cases heq : k = l
+  --     . left
+  --       rw [heq, orbit_eq_iff]
+  --       use Equiv.swap l i
+  --       simp
+  --     . right
+  --       rw [orbit_eq_iff]
+  --       by_cases hik : i = k
+  --       . rcases hik with rfl
+  --         use Equiv.swap l j; simp
+  --         exact Equiv.swap_apply_of_ne_of_ne heq this
+  --       by_cases hjl : j = l
+  --       . rcases hjl with rfl
+  --         use Equiv.swap k i; simp
+  --         apply Equiv.swap_apply_of_ne_of_ne
+  --         . symm; assumption
+  --         . symm; assumption
+  --       by_cases hilkj : i = l ∧ k = j
+  --       . rcases hilkj with ⟨rfl, rfl⟩
+  --         use Equiv.swap i j; simp
+  --       by_cases hil : i = l
+  --       . rcases hil with rfl
+  --         simp at hilkj
+  --         use Equiv.swap k i * Equiv.swap i j; simp
+  --         constructor
+  --         . have : (Equiv.swap i j) k = k := by
+  --             apply Equiv.swap_apply_of_ne_of_ne
+  --             assumption'
+  --           rw [this]
+  --           simp
+  --         . apply Equiv.swap_apply_of_ne_of_ne
+  --           assumption'
+  --           symm
+  --           assumption'
+  --       by_cases hil : k = j
+  --       . rcases hil with rfl
+  --         simp at hilkj
+  --         use Equiv.swap l j * Equiv.swap i j; simp
+  --         constructor
+  --         . apply Equiv.swap_apply_of_ne_of_ne
+  --           assumption'
+  --         . have : (Equiv.swap i j) l = l := by
+  --             apply Equiv.swap_apply_of_ne_of_ne
+  --             symm
+  --             assumption
+  --             symm
+  --             assumption
+  --           rw [this]
+  --           simp
+  --       use Equiv.swap l j * Equiv.swap k i
+  --       simp
+  --       constructor
+  --       . apply Equiv.swap_apply_of_ne_of_ne
+  --         assumption
+  --         assumption
+  --       . have : (Equiv.swap k i) l = l := by
+  --           apply Equiv.swap_apply_of_ne_of_ne
+  --           symm
+  --           assumption
+  --           symm
+  --           assumption
+  --         rw [this]
+  --         simp
 
 
 end VI

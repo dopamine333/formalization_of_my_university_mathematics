@@ -1,5 +1,7 @@
 import Mathlib.MeasureTheory.Measure.GiryMonad
 
+namespace giry_monad
+
 open MeasureTheory
 open scoped ENNReal
 

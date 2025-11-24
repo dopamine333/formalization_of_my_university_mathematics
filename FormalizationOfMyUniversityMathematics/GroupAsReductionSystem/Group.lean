@@ -1,4 +1,6 @@
 
+namespace GroupAsReductionSystem
+
 inductive Group (G : Type) [One G]: Type
   | of : G → Group G
   | one : Group G

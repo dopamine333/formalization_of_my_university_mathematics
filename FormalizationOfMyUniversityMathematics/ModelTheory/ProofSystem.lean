@@ -1,6 +1,8 @@
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Set.Insert
 
+namespace ProofSystem
+
 inductive Formula : Type
   | falsum : Formula
   | imp : Formula → Formula → Formula

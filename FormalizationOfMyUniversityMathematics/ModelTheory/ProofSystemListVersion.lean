@@ -1,5 +1,7 @@
 import Init.Data.List.Sublist
 
+namespace ProofSystemListVersion
+
 inductive Formula : Type
   | falsum : Formula
   | imp : Formula → Formula → Formula

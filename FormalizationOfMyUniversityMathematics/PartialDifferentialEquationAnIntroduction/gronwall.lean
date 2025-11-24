@@ -2,6 +2,7 @@ import Mathlib.Analysis.ODE.Gronwall
 import Mathlib.Analysis.Calculus.MeanValue
 -- import Mathlib.Analysis.Calculus.Deriv.MeanValue
 
+namespace gronwall
 
 open Metric Set Asymptotics Filter Real
 open scoped Topology NNReal

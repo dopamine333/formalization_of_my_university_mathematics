@@ -2,6 +2,8 @@ import Mathlib
 
 open Metric Set
 
+namespace thm_9_4_debug
+
 def compact_via_finite_subcover --9.2(a)
   {X : Type} [MetricSpace X] (S : Set X) : Prop :=
   ∀ {ι : Type} (U : ι → Set X),

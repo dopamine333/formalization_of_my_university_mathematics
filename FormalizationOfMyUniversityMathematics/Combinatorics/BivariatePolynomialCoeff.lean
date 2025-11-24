@@ -3,6 +3,8 @@ import Mathlib.Algebra.Polynomial.Basic
 import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Algebra.Polynomial.Coeff
 
+namespace BivariatePolynomialCoeff
+
 open scoped Polynomial.Bivariate
 -- open scoped LaurentPolynomial
 open Nat Polynomial Finset
@@ -234,6 +236,9 @@ theorem step7 (n k : ℕ) : (((C X : ℕ[X][Y]) + Y) ^ n).coeff k = n.choose k *
         convert coeff_monomial_of_ne ((n.choose j : ℕ[X]) * X ^ (n - j)) hj₂
         convert C_mul_X_pow_eq_monomial
         simp
+        sorry
+        sorry
+
       . intro hk
         replace hk : n < k := by linarith [mem_range.not.1 hk]
         rw [choose_eq_zero_of_lt hk]

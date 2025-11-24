@@ -259,14 +259,16 @@ theorem my_transfer_eq_pow {G : Type u_1} [Group G] {H : Subgroup G} {A : Type u
     funext q
     conv_rhs => dsimp
     -- g₀⁻¹ * g ^ |ω| * g₀ = g ^ |ω|
-    apply key
+    sorry
+    sorry
+    -- apply key
     -- recall key : ∀ (k g₀) (hk : g₀⁻¹ * g ^ k * g₀ ∈ H),
     --    g₀⁻¹ * g ^ k * g₀ = g ^ k
     -- magically, the proof hk aleady in the goal term
     -- true goal :
     -- ↑⟨g₀⁻¹ * g ^ |ω| * g₀, ...⟩ = g ^ H.index
     -- where ... is the proof of hk. (wow)
-
+  sorry
 -- example [Group G] (H : Subgroup G) (g : G)
 --   : ( ∀ n, n ∈ H ↔ g * n * g⁻¹ ∈ H) ↔ (∀ n, n ∈ H → g * n * g⁻¹ ∈ H) := by
 --   constructor
@@ -871,18 +873,19 @@ theorem my_card_commutator_le_of_finite_commutatorSet
   -- h1 : [H : Z(H)] ≤ n ^ rank H ≤ n ^ (2 * n)
   -- → h1 : [H : Z(H)] ≤ n ^ (2 * n)
   -- notice indeed n > 0, since n = |commutatorSet G| and commutatorSet G is nonempty
-  replace h2 := h2.trans (pow_dvd_pow _ (add_le_add_right (mul_le_mul_right' h1 _) 1))
-  -- h2 : |G'| | [H : Z(H)] ^ ([H : Z(H)] * n + 1) | [H : Z(H)] ^ (n ^ (2 * n) * n + 1)
-  -- → h2 : |G'| | [H : Z(H)] ^ (n ^ (2 * n) * n + 1)
-  rw [← pow_succ] at h2
-  -- h2 : |G'| | [H : Z(H)] ^ (n ^ (2 * n) * n + 1) = [H : Z(H)] ^ (n ^ (2 * n + 1) + 1)
-  -- → h2 : |G'| | [H : Z(H)] ^ (n ^ (2 * n + 1) + 1)
-  refine (Nat.le_of_dvd ?_ h2).trans (Nat.pow_le_pow_left h1 _)
-  -- h2 : |G'| | [H : Z(H)] ^ (n ^ (2 * n + 1) + 1)
-  -- → |G'| ≤ [H : Z(H)] ^ (n ^ (2 * n + 1) + 1) ≤ (n ^ (2 * n)) ^ (n ^ (2 * n + 1) + 1)
-  -- a | b imply a ≤ b need b > 0
-  -- to check [H : Z(H)] ^ (n ^ (2 * n + 1) + 1) > 0
-  exact pow_pos (Nat.pos_of_ne_zero FiniteIndex.index_ne_zero) _
+  sorry
+  -- replace h2 := h2.trans (pow_dvd_pow _ (add_le_add_right (mul_le_mul_right h1 _) 1))
+  -- -- h2 : |G'| | [H : Z(H)] ^ ([H : Z(H)] * n + 1) | [H : Z(H)] ^ (n ^ (2 * n) * n + 1)
+  -- -- → h2 : |G'| | [H : Z(H)] ^ (n ^ (2 * n) * n + 1)
+  -- rw [← pow_succ] at h2
+  -- -- h2 : |G'| | [H : Z(H)] ^ (n ^ (2 * n) * n + 1) = [H : Z(H)] ^ (n ^ (2 * n + 1) + 1)
+  -- -- → h2 : |G'| | [H : Z(H)] ^ (n ^ (2 * n + 1) + 1)
+  -- refine (Nat.le_of_dvd ?_ h2).trans (Nat.pow_le_pow_left h1 _)
+  -- -- h2 : |G'| | [H : Z(H)] ^ (n ^ (2 * n + 1) + 1)
+  -- -- → |G'| ≤ [H : Z(H)] ^ (n ^ (2 * n + 1) + 1) ≤ (n ^ (2 * n)) ^ (n ^ (2 * n + 1) + 1)
+  -- -- a | b imply a ≤ b need b > 0
+  -- -- to check [H : Z(H)] ^ (n ^ (2 * n + 1) + 1) > 0
+  -- exact pow_pos (Nat.pos_of_ne_zero FiniteIndex.index_ne_zero) _
   -- since Z(H) has finite index, thus [H : Z(H)] > 0
   -- and so [H : Z(H)] ^ _ > 0, done
 

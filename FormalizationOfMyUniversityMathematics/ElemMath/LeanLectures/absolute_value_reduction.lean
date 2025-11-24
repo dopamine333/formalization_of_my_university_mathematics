@@ -1,5 +1,5 @@
 import Mathlib.Tactic
-import LeanCopilot
+-- import LeanCopilot
 
 lemma exists_pos_lt_lt {a b : ℝ} (ha : a > 0) (hb : b > 0) : ∃ c > 0, c < a ∧ c < b := by
   refine ⟨min a b / 2, ?_, ?_, ?_⟩
@@ -70,17 +70,17 @@ example (a b c d e p q : ℝ):
       simp_all only [add_left_inj, mul_eq_mul_right_iff, abs_eq_zero]
       simp [abs_div]
 
-example (a b c d : ℝ) :
-  a / b * c + d ≤ |a| / |b| * |c| + |d| := by
-  calc a / b * c + d
-    _ ≤ |a / b * c + d| := by
-      suggest_tactics
-    _ ≤ |a / b * c| + |d| := by
-      suggest_tactics
-    _ ≤ |a / b| * |c| + |d| := by
-      suggest_tactics
-    _ = |a| / |b| * |c| + |d| := by
-      suggest_tactics
+-- example (a b c d : ℝ) :
+--   a / b * c + d ≤ |a| / |b| * |c| + |d| := by
+--   calc a / b * c + d
+--     _ ≤ |a / b * c + d| := by
+--       suggest_tactics
+--     _ ≤ |a / b * c| + |d| := by
+--       suggest_tactics
+--     _ ≤ |a / b| * |c| + |d| := by
+--       suggest_tactics
+--     _ = |a| / |b| * |c| + |d| := by
+--       suggest_tactics
 
 example (a b c d e p q : ℝ):
   (a - b) / (c - d) * (e - d) + (p / q)

@@ -1,6 +1,7 @@
 import Mathlib.Algebra.Polynomial.Basic
 import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Algebra.Polynomial.Coeff
+import Mathlib.Tactic
 
 open Nat Polynomial
 

@@ -68,7 +68,7 @@ example (f : ℝ → ℝ) (f_deriv : ∀ t, HasDerivAt f 0 t) (f_init : f 0 = 1)
   let s : ℝ → Set ℝ := fun t ↦ Set.univ
   have hv : ∀ t, LipschitzOnWith 0 (v t) (s t) := by
     simp [v, s]
-    exact LipschitzWith.const' 0
+    -- exact LipschitzWith.const' 0
   have hf : ∀ t, HasDerivAt f (v t (f t)) t ∧ f t ∈ s t := by
     simp [v, f_deriv, s]
   have hg : ∀ t, HasDerivAt g (v t (g t)) t ∧ g t ∈ s t := by
@@ -85,7 +85,7 @@ example (f : ℝ → ℝ) (f_deriv : ∀ t, HasDerivAt f 1 t) (f_init : f 0 = 1)
   let s : ℝ → Set ℝ := fun t ↦ Set.univ
   have hv : ∀ t, LipschitzOnWith 0 (v t) (s t) := by
     simp [v, s]
-    exact LipschitzWith.const' 1
+    -- exact LipschitzWith.const' 1
   have hf : ∀ t, HasDerivAt f (v t (f t)) t ∧ f t ∈ s t := by
     simp [v, f_deriv, s]
   have hg : ∀ t, HasDerivAt g (v t (g t)) t ∧ g t ∈ s t := by
@@ -102,7 +102,7 @@ example (f : ℝ → ℝ) (f_deriv : ∀ t, HasDerivAt f t t)
   let s : ℝ → Set ℝ := fun t ↦ Set.univ
   have hv : ∀ t, LipschitzOnWith 0 (v t) (s t) := by
     simp [v, s]
-    exact fun t ↦ LipschitzWith.const' t
+    -- exact fun t ↦ LipschitzWith.const' t
   have hf : ∀ t, HasDerivAt f (v t (f t)) t ∧ f t ∈ s t := by
     simp [v, f_deriv, s]
   have hg : ∀ t, HasDerivAt g (v t (g t)) t ∧ g t ∈ s t := by
@@ -181,7 +181,7 @@ f'' = 0, f' 0 = a, f 0 = b => f = a * x + b
   f = (a * t + b, a)
 -/
 
-#check HasDerivAt.prod
+-- #check HasDerivAt.prod
 #check HasDerivAt.mul
 #check HasDerivAt.fun_mul
 #check hasDerivAt_mul_const

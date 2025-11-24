@@ -1,3 +1,5 @@
+namespace GroupAsReductionSystem.TrivialGroup
+
 inductive Group : Type
   | one : Group
   | mul : Group → Group → Group

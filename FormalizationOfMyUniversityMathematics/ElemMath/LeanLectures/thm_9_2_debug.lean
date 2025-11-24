@@ -1,6 +1,8 @@
 import Mathlib
 open Metric Set Classical
 
+namespace thm_9_2_debug
+
 -- strictly increasing predicate
 def StrictlyIncreasing (v : ℕ → ℕ) : Prop :=
   ∀ i j, i < j → v i < v j

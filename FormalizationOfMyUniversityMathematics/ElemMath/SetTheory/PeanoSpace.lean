@@ -24,23 +24,23 @@ def nat.zero : (nat : set) := ⟨∅, by
   exact hzero
 ⟩
 
-def nat.succ : Function (nat : set) nat where
-  relation := specification (
-    fun p ↦ ∃ x ∈ nat, ∃ y ∈ nat, p = (x, y)ˢ ∧ y = x ∪ {x}
-  ) (nat ×ˢ nat)
-  is_function := by
-    apply function_relation_is_function
-    intro a ha
-    obtain ⟨n, hn, rfl⟩ := mem_product_iff.mp ha
-    use n ∪ {n}
-    constructor
-    . rw [mem_specification_iff]
-      intro S ⟨hzero, hsucc⟩
-      exact hsucc n hn
-    . use n
-      constructor
-      . exact hn
-      . rfl
+-- def nat.succ : Function (nat : set) nat where
+--   relation := specification (
+--     fun p ↦ ∃ x ∈ nat, ∃ y ∈ nat, p = (x, y)ˢ ∧ y = x ∪ {x}
+--   ) (nat ×ˢ nat)
+--   is_function := by
+--     apply function_relation_is_function
+--     intro a ha
+--     obtain ⟨n, hn, rfl⟩ := mem_product_iff.mp ha
+--     use n ∪ {n}
+--     constructor
+--     . rw [mem_specification_iff]
+--       intro S ⟨hzero, hsucc⟩
+--       exact hsucc n hn
+--     . use n
+--       constructor
+--       . exact hn
+--       . rfl
 
 
-x = f(x)
+-- x = f(x)

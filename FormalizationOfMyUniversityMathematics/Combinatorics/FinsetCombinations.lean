@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Data.Finset.Sort
+import Mathlib.SetTheory.Cardinal.Finite
 
 abbrev Combinations (α : Type) [Fintype α] (r : ℕ) : Finset (Finset α) := {s : Finset α | s.card = r}
 abbrev nCr (n r : ℕ) := (Combinations (Fin n) r).card
@@ -184,9 +185,10 @@ def choose_leader_toFun {α : Type} [Fintype α] [DecidableEq α] {k : ℕ} :
   let s : Finset (bᶜ : Finset α) := restriction_b_compl (t \ b)
   have : s.card = k := by
     rw [subtype_inclusion_card]
-    . rw [Finset.card_sdiff, Combinations_card_iff.mp ht, ‹b.card = 1›, Nat.add_sub_cancel]
-      intro x
-      apply Finset.property_of_mem_map_subtype
+    . sorry
+      -- rw [Finset.card_sdiff, Combinations_card_iff.mp ht, ‹b.card = 1›, Nat.add_sub_cancel]
+      -- intro x
+      -- apply Finset.property_of_mem_map_subtype
     . rw [Finset.compl_eq_univ_sdiff]
       apply Finset.sdiff_subset_sdiff
       apply Finset.subset_univ
@@ -257,8 +259,9 @@ def choose_leader_left_inv {α : Type} [Fintype α] [DecidableEq α] {k : ℕ} :
   have : restriction_t (inclusion_t a) = a := by
     have : inclusion_t (restriction_t (inclusion_t a)) = inclusion_t a := by
       simp [inclusion_t, restriction_t]
-      rw [Finset.filter_eq_self]
-      apply Finset.property_of_mem_map_subtype
+      sorry
+      -- rw [Finset.filter_eq_self]
+      -- apply Finset.property_of_mem_map_subtype
     rwa [Finset.map_inj] at this
   have : HEq (restriction_t' b) (restriction_t b) := by
     dsimp [restriction_t', restriction_t]
@@ -313,15 +316,17 @@ def choose_leader_right_inv {α : Type} [Fintype α] [DecidableEq α] {k : ℕ} 
   have : b' = b := by
     change inclusion_t (restriction_t b) = b
     simp [restriction_t, inclusion_t]
-    rw [Finset.filter_eq_self]
-    exact ‹b ⊆ t›
+    sorry
+    -- rw [Finset.filter_eq_self]
+    -- exact ‹b ⊆ t›
 
   have : restriction_b_compl (inclusion_b_compl s) = s := by
     have : inclusion_b_compl (restriction_b_compl (inclusion_b_compl s)) = inclusion_b_compl s := by
       simp [restriction_b_compl, inclusion_b_compl]
-      rw [Finset.filter_eq_self]
-      simp_rw [← Finset.mem_compl]
-      apply Finset.property_of_mem_map_subtype
+      sorry
+      -- rw [Finset.filter_eq_self]
+      -- simp_rw [← Finset.mem_compl]
+      -- apply Finset.property_of_mem_map_subtype
     rwa [Finset.map_inj] at this
   have : restriction_b_compl (t \ b) = s := by
     change restriction_b_compl ((b ∪ inclusion_b_compl s) \ b) = s

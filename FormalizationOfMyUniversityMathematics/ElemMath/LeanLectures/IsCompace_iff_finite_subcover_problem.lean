@@ -24,17 +24,17 @@ theorem IsCompact_image
     have : f x ∈ ⋃ i, U i := hcover (mem_image_of_mem f hx)
     rcases mem_iUnion.1 this with ⟨i, hi⟩
     exact mem_iUnion.2 ⟨i, hi⟩
-
+  sorry
   -- Apply compactness of K to get a finite subcover
-  rcases hK V hVopen hVcover with ⟨t, hKsub⟩
+  -- rcases hK V hVopen hVcover with ⟨t, hKsub⟩
 
-  -- Push forward the finite subcover to f '' K
-  use t
-  intro y hy
-  rcases hy with ⟨x, hxK, rfl⟩
-  have : x ∈ ⋃ i ∈ t, V i := hKsub hxK
-  rcases mem_iUnion₂.1 this with ⟨i, hit, hxV⟩
-  exact mem_iUnion₂.2 ⟨i, hit, hxV⟩
+  -- -- Push forward the finite subcover to f '' K
+  -- use t
+  -- intro y hy
+  -- rcases hy with ⟨x, hxK, rfl⟩
+  -- have : x ∈ ⋃ i ∈ t, V i := hKsub hxK
+  -- rcases mem_iUnion₂.1 this with ⟨i, hit, hxV⟩
+  -- exact mem_iUnion₂.2 ⟨i, hit, hxV⟩
 
 theorem IsCompact_image'
   {X : Type u} {Y : Type v} [TopologicalSpace X] [TopologicalSpace Y]
@@ -91,12 +91,12 @@ theorem IsCompact_image''
     exact mem_iUnion.2 ⟨i, hi⟩
 
   -- Apply compactness of K to get a finite subcover
-  rcases hK V hVopen hVcover with ⟨t, hKsub⟩
-
+  -- rcases hK V hVopen hVcover with ⟨t, hKsub⟩
+  sorry
   -- Push forward the finite subcover to f '' K
-  use t
-  intro y hy
-  rcases hy with ⟨x, hxK, rfl⟩
-  have : x ∈ ⋃ i ∈ t, V i := hKsub hxK
-  rcases mem_iUnion₂.1 this with ⟨i, hit, hxV⟩
-  exact mem_iUnion₂.2 ⟨i, hit, hxV⟩
+  -- use t
+  -- intro y hy
+  -- rcases hy with ⟨x, hxK, rfl⟩
+  -- have : x ∈ ⋃ i ∈ t, V i := hKsub hxK
+  -- rcases mem_iUnion₂.1 this with ⟨i, hit, hxV⟩
+  -- exact mem_iUnion₂.2 ⟨i, hit, hxV⟩

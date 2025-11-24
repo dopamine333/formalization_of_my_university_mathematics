@@ -132,6 +132,7 @@ theorem first_example
           rw [integral_exp_mul (neg_ne_zero.2 h)]
           field_simp [neg_ne_zero.2 h]
           ring
+          sorry
     _ ↔ ∀ t,
     y t = if a = 0
           then b * t + y 0

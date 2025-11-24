@@ -19,7 +19,7 @@ example (a : WithZero (Multiplicative ℤ)) :
   exact CommMonoidWithZero.mul_zero a
 example (a b c : WithZero (Multiplicative ℤ))
   (h : a ≤ b) : a * c ≤ b * c := by
-  exact mul_le_mul_right' h c
+  exact mul_le_mul_left h c
 #check WithZero.instOrderBot
 example : (⊥ : WithZero (Multiplicative ℤ)) = 0 := by
   exact rfl

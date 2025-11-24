@@ -2,6 +2,8 @@ import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
+namespace FundamentalTheoremofCalculus
+
 open intervalIntegral
 open scoped Topology
 -- -- Interval integral notation

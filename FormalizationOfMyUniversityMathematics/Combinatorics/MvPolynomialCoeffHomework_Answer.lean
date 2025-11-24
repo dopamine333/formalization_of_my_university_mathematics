@@ -3,6 +3,7 @@ import Mathlib.Algebra.MvPolynomial.Eval
 import Mathlib.Algebra.MvPolynomial.Equiv
 import Mathlib.Data.Nat.Choose.Sum
 
+namespace HW_Answer
 
 open MvPolynomial Finsupp
 noncomputable section

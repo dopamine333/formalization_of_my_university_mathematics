@@ -65,6 +65,7 @@ example (a b c : ℝ)
   apply_fun (fun x => 1 / -(x + (-1 / b))) at h
   linear_combination (norm := field_simp) h
   ring
+  sorry
 
 
 

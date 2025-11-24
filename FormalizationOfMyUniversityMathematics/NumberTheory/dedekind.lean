@@ -72,7 +72,7 @@ theorem one_le_inv_of_le
   rw [FractionalIdeal.mem_inv_iff h0I.ne']
   intro y hy
   have step₁ : x * y ∈ 1 * I := FractionalIdeal.mul_mem_mul hx hy
-  have step₂ : 1 * I ≤ 1 * 1 := mul_le_mul_left' hI1 _
+  have step₂ : 1 * I ≤ 1 * 1 := mul_le_mul_right hI1 _
   have step₃ : (1 : FractionalIdeal A⁰ K) * 1 = 1 := mul_one _
   exact step₃ ▸ step₂ step₁
 

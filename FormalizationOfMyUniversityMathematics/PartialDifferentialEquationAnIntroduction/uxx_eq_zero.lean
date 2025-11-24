@@ -3,6 +3,8 @@ import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.FDeriv.Symmetric
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 
+namespace uxx_eq_zero
+
 /-
 
 Find all u(x, y) satisfying the equation uxx = 0. Well, we can integrate

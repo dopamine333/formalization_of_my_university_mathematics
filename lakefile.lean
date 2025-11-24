@@ -11,9 +11,9 @@ package «formalization_of_my_university_mathematics» where
     "-L./.lake/packages/LeanCopilot/.lake/build/lib",
     "-lctranslate2"
   ]
-require mathlib from git "https://github.com/leanprover-community/mathlib4.git" @ "v4.24.0"
+require mathlib from git "https://github.com/leanprover-community/mathlib4.git"
 
-require LeanCopilot from git "https://github.com/lean-dojo/LeanCopilot.git" @ "v4.24.0"
+-- require LeanCopilot from git "https://github.com/lean-dojo/LeanCopilot.git" @ "v4.24.0"
 
 @[default_target]
 lean_lib «FormalizationOfMyUniversityMathematics» where
