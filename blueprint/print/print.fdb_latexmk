@@ -1,12 +1,14 @@
 # Fdb version 4
-["pdflatex"] 1763975289.61262 "print.tex" "/Users/as/Desktop/lean_lab/formalization_of_my_university_mathematics/blueprint/print/print.pdf" "print" 1763975291.59891 0
-  "/Users/as/Desktop/lean_lab/formalization_of_my_university_mathematics/blueprint/print/print.aux" 1763975290.81606 261 36b2292f81c820a05a8df2d62ed7e120 "pdflatex"
-  "/Users/as/Desktop/lean_lab/formalization_of_my_university_mathematics/blueprint/print/print.out" 1763975290.81662 93 f59ea323081d7eea157b51e78b72d5e4 "pdflatex"
+["pdflatex"] 1763997141.91473 "print.tex" "/Users/as/Desktop/lean_lab/formalization_of_my_university_mathematics/blueprint/print/print.pdf" "print" 1763997144.09749 0
+  "/Users/as/Desktop/lean_lab/formalization_of_my_university_mathematics/blueprint/print/print.aux" 1763997143.3493 380 79336ecd87d94b24b236e6befd4c01b7 "pdflatex"
+  "/Users/as/Desktop/lean_lab/formalization_of_my_university_mathematics/blueprint/print/print.out" 1763997143.34999 93 f59ea323081d7eea157b51e78b72d5e4 "pdflatex"
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1246382020 916 f87d7c45f9c908e672703b83b72241a3 ""
+  "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam5.tfm" 1246382020 924 9904cf1d39e9767e7a3622f2a125a565 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam7.tfm" 1246382020 928 2dc8d444221b7a635bb58038579b861a ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm" 1246382020 908 2921f8a10601f252058503cc6570e581 ""
+  "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm5.tfm" 1246382020 940 75ac932a52f80982a9f8ea75d03a34cf ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm" 1246382020 940 228d6584342e91276bf566bcf9716b83 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm" 1136768653 1524 4414a8315f39513458b80dfc63bff03a ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmmi6.tfm" 1136768653 1512 f21f83efb36853c0b70002322c1ab3ad ""
@@ -81,7 +83,7 @@
   "/usr/local/texlive/2025/texmf-dist/web2c/texmf.cnf" 1739380943 42148 61becc7c670cd061bb319c643c27fdd4 ""
   "/usr/local/texlive/2025/texmf-var/web2c/xetex/xelatex.fmt" 1763974011 5639799 44343b67f8d3750617c76f7beb993b37 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "content.tex" 1763975284.66253 433 d04bf4d0bfc1074e14a87b13b489b4df ""
+  "content.tex" 1763997139.36216 1412 a7785991996322e72c59914bc7d55a0b ""
   "macros/common.tex" 1763910098.0161 820 60fafcc3aa944a5e60030581a943ef6b ""
   "macros/print.tex" 1763910098.01792 1101 87627b2ec24fef68edc71c13f43f7bab ""
   "print.tex" 1763910098.02494 1123 550e698273bee25d4325f0e680aa9e37 ""

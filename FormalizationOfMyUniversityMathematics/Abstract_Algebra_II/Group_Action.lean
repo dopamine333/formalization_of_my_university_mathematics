@@ -1,7 +1,7 @@
-import Mathlib.GroupTheory.Sylow
+-- import Mathlib.GroupTheory.Sylow
 import Mathlib.GroupTheory.Perm.Cycle.Concrete
-import Mathlib.GroupTheory.Perm.Subgroup
-import Mathlib.GroupTheory.PresentedGroup
+-- import Mathlib.GroupTheory.Perm.Subgroup
+-- import Mathlib.GroupTheory.PresentedGroup
 
 section I
 variable {G : Type} [Group G]

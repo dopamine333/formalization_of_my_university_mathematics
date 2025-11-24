@@ -1,5 +1,5 @@
 import FormalizationOfMyUniversityMathematics.Abstract_Algebra_II.Group_Action
-import FormalizationOfMyUniversityMathematics.Abstract_Algebra_II.sym_group_of_pillar
+-- import FormalizationOfMyUniversityMathematics.Abstract_Algebra_II.sym_group_of_pillar
 -- import FormalizationOfMyUniversityMathematics.Basic
 -- import FormalizationOfMyUniversityMathematics.Combinatorics.BivariatePolynomialCoeff
 -- import FormalizationOfMyUniversityMathematics.Combinatorics.FiniteLinearOrder

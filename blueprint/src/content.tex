@@ -12,3 +12,39 @@ hello world!
 
 \section{section 1}
 section 1
+
+
+% def orbit (G : Type) {X : Type} [Group G] [MulAction G X] (x : X) : Set X := {y : X | ∃ g : G, g • x = y}
+\begin{definition}
+  \label{def:orbit}
+  \lean{orbit}
+  \leanok
+  The orbit $\operatorname{orbit}(G, x)$ is the set …
+\end{definition}
+
+
+\begin{lemma}[Orbit equality criterion]
+  \label{lem:orbit_eq_iff}
+  \lean{orbit_eq_iff}
+  \uses{def:orbit}
+  \leanok
+We have $\operatorname{orbit}(G, x) = \operatorname{orbit}(G, y)$ iff $\exists g, g \cdot x = y$.
+\end{lemma}
+
+
+% theorem orbit_eq_iff (G : Type) {X : Type} [Group G] [MulAction G X] (x y : X)
+%   : orbit G x = orbit G y ↔ ∃ g : G, g • x = y := by
+%     constructor
+%     . intro h
+%       have : y ∈ orbit G x := by rw [h]; use 1; simp
+%       exact this
+%     . rintro ⟨g, rfl⟩
+%       ext y
+%       simp [orbit]
+%       constructor
+%       . rintro ⟨g', rfl⟩
+%         use g' * g⁻¹
+%         simp [mul_smul]
+%       . rintro ⟨g', rfl⟩
+%         use g' * g
+%         simp [mul_smul]
